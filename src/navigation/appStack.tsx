@@ -1,17 +1,14 @@
 import * as React from 'react';
 import {
   createNativeStackNavigator,
-  NativeStackScreenProps,
+  NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {APP_TAB, HOME_TAB, LANDING_SCREEN} from './ScreenNames';
-import {slideFromRight} from '../styles/commonsStyles';
-import {colors} from '../styles/theme';
-import Home from '../components/Home';
-import HomeSelected from '../components/HomeSelected';
-import HomeStack from '../navigation/HomeStack';
-import LandingScreen from '../screens/LandingScreen';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
+import {slideFromRight} from '../styles/commonsStyles';
+import {LANDING_SCREEN, APP_TAB, HOME_TAB, HOME_SCREEN} from './ScreenNames';
+import LandingScreen from '../screen/auth/LandingScreen/LandingScreen';
+import HomeScreen from '../screen/app/BottomTab/Home/HomeScreen/HomeScreen';
 
 // Define Stack and Tab types
 export type RootStackParamList = {
@@ -23,10 +20,14 @@ export type BottomTabParamList = {
   [HOME_TAB]: undefined;
 };
 
-const RootStack = createNativeStackNavigator<RootStackParamList>();
+interface AppStackProps {
+  initialRouteName: keyof RootStackParamList;
+}
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
-const screenOptions: NativeStackScreenProps<any> = {
+const screenOptions: NativeStackNavigationOptions = {
   animation: 'slide_from_right',
 };
 
@@ -41,6 +42,24 @@ const tabIcons = (tabName: keyof BottomTabParamList) => {
   };
 };
 
+const HomeStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName={HOME_SCREEN}
+      screenOptions={screenOptions}>
+      <Stack.Screen
+        name={HOME_SCREEN}
+        component={HomeScreen}
+        options={{
+          headerShown: true,
+          header: props => <AppHeader {...props} />,
+          ...slideFromRight,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const AppTab = () => {
   return (
     <Tab.Navigator
@@ -48,19 +67,17 @@ const AppTab = () => {
       screenOptions={(): BottomTabNavigationOptions => ({
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          display: 'none',
+          backgroundColor: '',
         },
-        tabBarActiveTintColor: '#000', // Define active color
-        tabBarInactiveTintColor: '#666', // Define inactive color
+        tabBarActiveTintColor: '', // Define active color
+        tabBarInactiveTintColor: '', // Define inactive color
         headerShown: false,
-        tabBarShowLabel: false, // Hide labels if not needed
       })}>
       <Tab.Screen
         name={HOME_TAB}
         component={HomeStack}
         options={{
           tabBarIcon: tabIcons(HOME_TAB),
-          unmountOnBlur: true,
           tabBarLabel: HOME_TAB,
         }}
       />
@@ -68,14 +85,12 @@ const AppTab = () => {
   );
 };
 
-interface AppStackProps {
-  initialRouteName: keyof RootStackParamList;
-}
-
 export default function AppStack({initialRouteName}: AppStackProps) {
   return (
-    <RootStack.Navigator initialRouteName={initialRouteName}>
-      <RootStack.Screen
+    <Stack.Navigator
+      initialRouteName={initialRouteName}
+      screenOptions={screenOptions}>
+      <Stack.Screen
         name={LANDING_SCREEN}
         component={LandingScreen}
         options={{
@@ -83,7 +98,7 @@ export default function AppStack({initialRouteName}: AppStackProps) {
           headerShadowVisible: false,
         }}
       />
-      <RootStack.Screen
+      <Stack.Screen
         name={APP_TAB}
         options={{
           headerShown: false,
@@ -91,7 +106,7 @@ export default function AppStack({initialRouteName}: AppStackProps) {
           ...slideFromRight,
         }}>
         {props => <AppTab {...props} />}
-      </RootStack.Screen>
-    </RootStack.Navigator>
+      </Stack.Screen>
+    </Stack.Navigator>
   );
 }

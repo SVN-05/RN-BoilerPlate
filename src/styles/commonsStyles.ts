@@ -90,21 +90,21 @@ export const commonTopTabLabelStyle = {
 
 export const dividerColor = colors.greyE6E6E6;
 
-export const greyLine = {
+export const greyLine: ViewStyle = {
   width: '100%',
   height: 1,
   backgroundColor: dividerColor,
   opacity: 0.7,
 };
 
-export const lineStyle = {
+export const lineStyle: ViewStyle = {
   height: 1,
   backgroundColor: dividerColor,
   opacity: 0.7,
   flex: 1,
 };
 
-export const verticalGreyLine = {
+export const verticalGreyLine: ViewStyle = {
   width: 1,
   height: '100%',
   backgroundColor: dividerColor,

@@ -1,4 +1,5 @@
 import React from 'react';
+import {NativeSyntheticEvent, NativeTouchEvent} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -63,7 +64,7 @@ type AppIconProps = {
   size: number;
   color?: string;
   style?: object;
-  onPress?: () => void;
+  onPress?: (event: NativeSyntheticEvent<NativeTouchEvent>) => void;
 };
 
 const AppIcon: React.FC<AppIconProps> = ({
