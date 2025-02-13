@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
@@ -7,12 +8,39 @@ import {fontSizes} from '../../../../constants/constants';
 import {Controller} from 'react-hook-form';
 import AppLoader from '../../../AppLoader/AppLoader';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import {BASE_URL} from '../../../../utils/api';
-import {ErrorText} from '../../../microComponents/ErrorText';
+import {BASE_URL} from '../../../../utils/api/api';
+import {ErrorText} from '../../../micro/ErrorText';
 import {flexCol, flexRow} from '../../../../Styles/commonsStyles';
-import {iconFamily} from '../../../AppIcon/AppIcon';
+import AppIcon, {iconFamily} from '../../../AppIcon/AppIcon';
 
-const AppAttachmentPicker = ({
+interface AppAttachmentPickerProps {
+  placeholder: string;
+  fileTypes?: string[];
+  allowMultiSelection?: boolean;
+  control?: any;
+  name: string;
+  error?: any;
+  rules?: any;
+  uploadUrl: string;
+  disabled?: boolean;
+}
+
+interface FileData {
+  uri: string;
+  name: string;
+  type: string;
+}
+
+interface ResponseData {
+  data: any;
+}
+
+interface RenderPickerProps {
+  onChange: (value: any) => void;
+  value?: any;
+}
+
+const AppAttachmentPicker: React.FC<AppAttachmentPickerProps> = ({
   placeholder,
   fileTypes = [],
   allowMultiSelection = false,
@@ -27,7 +55,9 @@ const AppAttachmentPicker = ({
   const [disable, setDisable] = useState(false);
   const disableField = disabled || disable;
 
-  const handleAttachment = async onChange => {
+  const handleAttachment = async (
+    onChange: (value: any) => void,
+  ): Promise<void> => {
     setIsLoading(true); // Start loading state
     try {
       const res = await DocumentPicker.pick({
@@ -35,7 +65,7 @@ const AppAttachmentPicker = ({
         allowMultiSelection,
       });
 
-      const {uri, name, type} = res?.[0] || {};
+      const {uri, name, type} = (res?.[0] as FileData) || {};
       const formData = new FormData();
 
       // Append the file to FormData
@@ -60,7 +90,7 @@ const AppAttachmentPicker = ({
         return; // Early exit on error
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as ResponseData;
       if (data) {
         Toast.show({type: 'success', text2: 'File uploaded successfully.'});
         onChange(data?.data);
@@ -78,14 +108,18 @@ const AppAttachmentPicker = ({
     }
   };
 
-  const renderPicker = (onChange, value) =>
-    isLoading ? (
-      <AppLoader isTransparentLoader={isLoading} />
-    ) : (
+  const renderPicker = ({
+    onChange,
+    value,
+  }: RenderPickerProps): React.ReactElement => (
+    <AppLoader isTransparentLoader={isLoading}>
       <View style={flexCol}>
         <TouchableOpacity
           disabled={disableField}
-          style={styles.inputContainer(error)}
+          style={[
+            styles.inputContainer,
+            {borderColor: error ? colors.errorColor : colors.inputBorderColor},
+          ]}
           onPress={() => handleAttachment(onChange)}>
           <AppIcon
             name={'upload'}
@@ -101,16 +135,7 @@ const AppAttachmentPicker = ({
         </TouchableOpacity>
         {value && (
           <TouchableOpacity
-            style={{
-              width: '50%',
-              marginTop: 10,
-              backgroundColor: colors.grey1A1A19,
-              borderRadius: 5,
-              paddingHorizontal: 5,
-              paddingVertical: 2,
-              ...flexRow,
-              columnGap: 5,
-            }}
+            style={styles.fileStyle}
             onPress={() => {
               setDisable(false);
               onChange(undefined);
@@ -131,7 +156,8 @@ const AppAttachmentPicker = ({
           </TouchableOpacity>
         )}
       </View>
-    );
+    </AppLoader>
+  );
 
   return (
     <View style={styles.container}>
@@ -140,10 +166,12 @@ const AppAttachmentPicker = ({
           control={control}
           name={name}
           rules={rules}
-          render={({field: {onChange, value}}) => renderPicker(onChange, value)}
+          render={({field: {onChange, value}}) =>
+            renderPicker({onChange, value})
+          }
         />
       ) : (
-        renderPicker(() => {})
+        renderPicker({onChange: () => {}, value: undefined})
       )}
       <ErrorText error={error} />
     </View>
@@ -157,15 +185,24 @@ const styles = StyleSheet.create({
     width: '100%',
     ...flexCol,
   },
-  inputContainer: error => ({
+  inputContainer: {
     width: '100%',
     height: 199,
     borderStyle: 'dashed',
-    borderColor: error ? colors.errorColor : colors.inputBorderColor,
     borderWidth: 1,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     ...flexCol,
-  }),
+  },
+  fileStyle: {
+    width: '50%',
+    marginTop: 10,
+    backgroundColor: colors.grey1A1A19,
+    borderRadius: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    ...flexRow,
+    columnGap: 5,
+  },
 });

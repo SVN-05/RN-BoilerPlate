@@ -25,6 +25,11 @@ interface AppRadioInputProps {
   color?: string;
 }
 
+interface RenderInputProps {
+  onSelect: (value: string) => void;
+  selectedValue: string;
+}
+
 const AppRadioInput: React.FC<AppRadioInputProps> = ({
   value,
   inputContainer,
@@ -49,18 +54,13 @@ const AppRadioInput: React.FC<AppRadioInputProps> = ({
     borderWidth: borderWidth,
   }));
 
-  interface RenderInputProps {
-    onChange: (value: string) => void;
-    value: string;
-  }
-
-  const renderInput = ({onChange, value}: RenderInputProps) => (
+  const renderInput = ({onSelect, selectedValue}: RenderInputProps) => (
     <RadioGroup
       radioButtons={formattedOptions}
       layout={layout}
       containerStyle={radioContainerStyle}
-      selectedId={value}
-      onPress={id => onChange(id)}
+      selectedId={selectedValue}
+      onPress={id => onSelect(id)}
     />
   );
 
@@ -79,10 +79,12 @@ const AppRadioInput: React.FC<AppRadioInputProps> = ({
           control={control}
           name={name}
           rules={rules}
-          render={({field: {onChange, value}}) => renderInput(onChange, value)}
+          render={({field: {onChange: onSelect, value: selectedValue}}) =>
+            renderInput({onSelect, selectedValue})
+          }
         />
       ) : (
-        renderInput(onChange, value) // Handle uncontrolled case
+        renderInput({onSelect: onChange || (() => {}), selectedValue: value}) // Handle uncontrolled case
       )}
       <ErrorText error={error} />
     </View>

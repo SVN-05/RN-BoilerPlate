@@ -32,6 +32,7 @@ const colors = {
 
   greyF8FAFC: '#F8FAFC',
   greyE6E6E6: '#E6E6E6',
+  grey1A1A19: '#1A1A19',
 
   green2FB344: '#2FB344',
 };

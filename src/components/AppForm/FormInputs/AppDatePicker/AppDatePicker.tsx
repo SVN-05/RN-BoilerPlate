@@ -1,14 +1,34 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {TouchableWithoutFeedback, View} from 'react-native';
+import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {colors} from '../../../../Styles/theme';
+import {colors} from '../../../../styles/theme';
 import AppText from '../../../AppText/AppText';
 import {Controller} from 'react-hook-form';
-import {ErrorText} from '../../../microComponents/ErrorText';
-import {flexRow} from '../../../../Styles/commonsStyles';
+import {ErrorText} from '../../../micro/ErrorText';
+import {flexRow} from '../../../../styles/commonsStyles';
 import AppIcon, {iconFamily} from '../../../AppIcon/AppIcon';
 
-const AppDatePicker = ({
+interface AppDatePickerProps {
+  mode?: 'date' | 'time' | 'datetime';
+  minDate?: string;
+  maxDate?: string;
+  control?: any;
+  name: string;
+  error?: string;
+  placeholder?: string;
+  rules?: object;
+  disabled?: boolean;
+  value?: string;
+  label?: string;
+}
+
+interface RenderDatePickerProps {
+  onChange: (date: string) => void;
+  value: string | Date;
+}
+
+const AppDatePicker: React.FC<AppDatePickerProps> = ({
   mode = 'date',
   minDate,
   maxDate,
@@ -28,15 +48,20 @@ const AppDatePicker = ({
   const [open, setOpen] = useState(false);
 
   const handleDatePicker = () => {
-    if (!disabled) setOpen(prev => !prev);
+    if (!disabled) {
+      setOpen(prev => !prev);
+    }
   };
 
-  const renderDatePicker = (onChange, value) => (
+  const renderDatePicker = ({
+    onChange,
+    value: passed_value,
+  }: RenderDatePickerProps) => (
     <DatePicker
       modal
       mode={mode}
       open={open}
-      date={value ? new Date(value) : new Date()}
+      date={passed_value ? new Date(passed_value) : new Date()}
       {...(minDate ? {minimumDate: new Date(minDate)} : {})}
       {...(maxDate ? {maximumDate: new Date(maxDate)} : {})}
       onConfirm={date => {
@@ -60,16 +85,12 @@ const AppDatePicker = ({
       )}
       <TouchableWithoutFeedback onPress={handleDatePicker}>
         <View
-          style={{
-            width: '100%',
-            height: 60,
-            borderColor: error ? colors.errorColor : inputBorderColor,
-            borderWidth: 1,
-            borderRadius: 20,
-            ...flexRow,
-            justifyContent: 'space-between',
-            paddingHorizontal: 20,
-          }}>
+          style={[
+            styles.inputStyle,
+            {
+              borderColor: error ? colors.errorColor : inputBorderColor,
+            },
+          ]}>
           <AppText
             text={value || placeholder}
             textColor={placeholderTextColor}
@@ -87,12 +108,12 @@ const AppDatePicker = ({
           control={control}
           name={name}
           rules={rules}
-          render={({field: {onChange, value}}) =>
-            renderDatePicker(onChange, value)
+          render={({field: {onChange, value: controllerValue}}) =>
+            renderDatePicker({onChange, value: controllerValue})
           }
         />
       ) : (
-        renderDatePicker(() => {}, new Date())
+        renderDatePicker({onChange: () => {}, value: new Date()})
       )}
       <ErrorText error={error} />
     </View>
@@ -100,3 +121,15 @@ const AppDatePicker = ({
 };
 
 export default AppDatePicker;
+
+const styles = StyleSheet.create({
+  inputStyle: {
+    width: '100%',
+    height: 60,
+    borderWidth: 1,
+    borderRadius: 20,
+    ...flexRow,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+});
