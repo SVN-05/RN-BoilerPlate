@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TextStyle} from 'react-native';
 import AppInput from './FormInputs/AppInput/AppInput';
 import AppDatePicker from './FormInputs/AppDatePicker/AppDatePicker';
 import AppSelect from './FormInputs/AppSelect/AppSelect';
@@ -50,7 +50,11 @@ interface Field {
   fileTypes?: Array<string>;
   allowMultiSelection?: boolean;
   uploadUrl?: string;
-  layout?: string;
+  layout?: 'column' | 'row';
+  leftText?: string;
+  leftTextStyle?: TextStyle;
+  rightText?: string;
+  rightTextStyle?: TextStyle;
 }
 
 const AppForm: React.FC<AppFormProps> = ({
@@ -93,6 +97,10 @@ const AppForm: React.FC<AppFormProps> = ({
       allowMultiSelection,
       uploadUrl,
       layout,
+      leftText,
+      leftTextStyle,
+      rightText,
+      rightTextStyle,
     } = field || {};
 
     const rules = {
@@ -104,7 +112,12 @@ const AppForm: React.FC<AppFormProps> = ({
     };
 
     return (
-      <View style={{flexBasis: width || '100%', flexGrow: 1}} key={name}>
+      <View
+        style={{
+          flexBasis: typeof width === 'number' ? width : '100%',
+          flexGrow: 1,
+        }}
+        key={name}>
         {(() => {
           switch (type) {
             case 'text':
@@ -160,9 +173,12 @@ const AppForm: React.FC<AppFormProps> = ({
               return (
                 <AppCheckbox
                   name={name}
-                  placeholder={placeholder}
                   checked={watch(name)}
                   error={errors[name]?.message}
+                  leftText={leftText}
+                  leftTextStyle={leftTextStyle}
+                  rightText={rightText}
+                  rightTextStyle={rightTextStyle}
                 />
               );
             case 'file':

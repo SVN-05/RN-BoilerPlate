@@ -11,8 +11,8 @@ import AppIcon, {iconFamily} from '../../../AppIcon/AppIcon';
 
 interface AppDatePickerProps {
   mode?: 'date' | 'time' | 'datetime';
-  minDate?: string;
-  maxDate?: string;
+  minDate?: string | Date;
+  maxDate?: string | Date;
   control?: any;
   name: string;
   error?: string;

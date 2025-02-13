@@ -9,14 +9,14 @@ import {flexCol} from '../../../../styles/commonsStyles';
 import {RadioGroup, RadioButtonProps} from 'react-native-radio-buttons-group';
 
 interface AppRadioInputProps {
-  value: string;
+  value?: string;
   inputContainer?: StyleProp<ViewStyle>;
   error?: string;
   control?: Control;
   name: string;
   rules?: object;
   label?: string;
-  options: RadioButtonProps[];
+  options?: RadioButtonProps[];
   layout?: 'row' | 'column';
   radioContainerStyle?: StyleProp<ViewStyle>;
   onChange?: (value: string) => void;
@@ -47,7 +47,7 @@ const AppRadioInput: React.FC<AppRadioInputProps> = ({
   color = colors.appColor,
 }) => {
   const labelColor = colors.placeholderTxtColor;
-  const formattedOptions = options.map(option => ({
+  const formattedOptions = options?.map(option => ({
     ...option,
     color: color,
     borderColor: borderColor,
@@ -56,7 +56,7 @@ const AppRadioInput: React.FC<AppRadioInputProps> = ({
 
   const renderInput = ({onSelect, selectedValue}: RenderInputProps) => (
     <RadioGroup
-      radioButtons={formattedOptions}
+      radioButtons={formattedOptions || []}
       layout={layout}
       containerStyle={radioContainerStyle}
       selectedId={selectedValue}
@@ -84,7 +84,10 @@ const AppRadioInput: React.FC<AppRadioInputProps> = ({
           }
         />
       ) : (
-        renderInput({onSelect: onChange || (() => {}), selectedValue: value}) // Handle uncontrolled case
+        renderInput({
+          onSelect: onChange || (() => {}),
+          selectedValue: value || '',
+        }) // Handle uncontrolled case
       )}
       <ErrorText error={error} />
     </View>

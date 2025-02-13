@@ -14,14 +14,14 @@ import {flexCol, flexRow} from '../../../../Styles/commonsStyles';
 import AppIcon, {iconFamily} from '../../../AppIcon/AppIcon';
 
 interface AppAttachmentPickerProps {
-  placeholder: string;
+  placeholder?: string;
   fileTypes?: string[];
   allowMultiSelection?: boolean;
   control?: any;
   name: string;
   error?: any;
   rules?: any;
-  uploadUrl: string;
+  uploadUrl?: string;
   disabled?: boolean;
 }
 
