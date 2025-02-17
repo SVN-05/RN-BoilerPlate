@@ -1,7 +1,7 @@
 import React from 'react';
 import {ActivityIndicator, Modal, StyleSheet, View} from 'react-native';
-import {flexCol} from '../../Styles/commonsStyles';
-import {colors} from '../../Styles/theme';
+import {flexCol} from '../../styles/commonsStyles';
+import {colors} from '../../styles/theme';
 
 import {ReactNode} from 'react';
 

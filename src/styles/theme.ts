@@ -37,13 +37,14 @@ const colors = {
   green2FB344: '#2FB344',
 };
 
+const font_name = 'Inter';
 const fonts = {
-  primaryRegular: 'Inter-Regular',
-  primaryMedium: 'Inter-Medium',
-  primarySemiBold: 'Inter-SemiBold',
-  primaryBold: 'Inter-Bold',
-  primaryExtraBold: 'Inter-ExtraBold',
-  primaryItalic: 'Inter-Italic',
+  primaryRegular: `${font_name}-Regular`,
+  primaryMedium: `${font_name}-Medium`,
+  primarySemiBold: `${font_name}-SemiBold`,
+  primaryBold: `${font_name}-Bold`,
+  primaryExtraBold: `${font_name}-ExtraBold`,
+  primaryItalic: `${font_name}-Italic`,
 };
 
 export {colors, fonts};

@@ -17,7 +17,10 @@ const RenderWebView = ({
   onMessage: (event: any) => void;
 }) => {
   const INJECTED_JAVASCRIPT = `(function() {
-        const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta);
+        const meta = document.createElement('meta'); 
+        meta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'); 
+        meta.setAttribute('name', 'viewport'); 
+        document.getElementsByTagName('head')[0].appendChild(meta);
       })();`;
 
   return (
@@ -27,7 +30,7 @@ const RenderWebView = ({
       containerStyle={isAndroid ? {} : {paddingTop: 25}}
       startInLoadingState={startInLoadingState}
       javaScriptEnabled={true}
-      injectedJavaScript={INJECTED_JAVASCRIPT}
+      injectedJavaScriptBeforeContentLoaded={INJECTED_JAVASCRIPT}
       source={{
         uri: url,
       }}

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View} from 'react-native';
+import {TextStyle, View} from 'react-native';
 import {flexCol} from '../../Styles/commonsStyles';
 import {fontSizes, windowHeight} from '../../constants/constants';
 import AppText from '../AppText/AppText';
@@ -8,11 +8,11 @@ import AppText from '../AppText/AppText';
 const NoData = ({
   horizontal = false,
   is_full_screen = false,
-  textStyle = {} as React.CSSProperties,
+  textStyle = {} as TextStyle,
 }: {
   horizontal?: boolean;
   is_full_screen?: boolean;
-  textStyle?: React.CSSProperties;
+  textStyle?: TextStyle;
 }) => {
   return (
     <View

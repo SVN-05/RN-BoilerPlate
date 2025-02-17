@@ -6873,7 +6873,7 @@ react-native-vector-icons@^10.2.0:
 
 react-native-video@^6.10.0:
   version "6.10.0"
-  resolved "https://registry.npmjs.org/react-native-video/-/react-native-video-6.10.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-6.10.0.tgz#35ac89761c2ffde9234ca65456db9f62342ca930"
   integrity sha512-NyDnpSBRJkj7TxMku2dEys54qKynW/l9kSPCVvayyqXWrc24cxHhLvAaxORdJDb6tS4FhUbR8tFIoOY65/XKZg==
 
 react-native-webview@^13.13.2:
