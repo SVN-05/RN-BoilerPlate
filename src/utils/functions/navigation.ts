@@ -1,7 +1,9 @@
+import {StackActions} from '@react-navigation/native';
 export interface NavigationRef {
   goBack: () => void;
   navigate: (screenName: string, keys?: object) => void;
   replace: (screenName: string, keys?: object) => void;
+  dispatch: (action: any) => void;
 }
 
 export let navigationRef: NavigationRef | null = null;
@@ -24,6 +26,6 @@ export const goTo = (screeName: string, keys?: object) => {
 
 export const replace = (screeName: string, keys?: object) => {
   if (navigationRef) {
-    navigationRef.replace(screeName, keys);
+    navigationRef.dispatch(StackActions.replace(screeName, keys));
   }
 };
