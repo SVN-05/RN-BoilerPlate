@@ -37,14 +37,25 @@ const colors = {
   green2FB344: '#2FB344',
 };
 
-const font_name = 'Inter';
-const fonts = {
-  primaryRegular: `${font_name}-Regular`,
-  primaryMedium: `${font_name}-Medium`,
-  primarySemiBold: `${font_name}-SemiBold`,
-  primaryBold: `${font_name}-Bold`,
-  primaryExtraBold: `${font_name}-ExtraBold`,
-  primaryItalic: `${font_name}-Italic`,
+export const fontNames = {
+  Inter: 'Inter',
+};
+
+export const fontFamily = (font_name: string, fw: string) => {
+  switch (fw) {
+    case '500':
+      return `${font_name}-Medium`;
+    case '600':
+      return `${font_name}-SemiBold`;
+    case 'bold':
+      return `${font_name}-Bold`;
+    case 'extra':
+      return `${font_name}-ExtraBold`;
+    case 'italic':
+      return `${font_name}-Italic`;
+    default:
+      return `${font_name}-Regular`;
+  }
 };
 
 export {colors, fonts};

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Linking, Text, TextProps, useWindowDimensions} from 'react-native';
-import {colors, fonts} from '../../Styles/theme';
+import {colors, fontFamily, fontNames} from '../../styles/theme';
 import Hyperlink from 'react-native-hyperlink';
 import RenderHTML from 'react-native-render-html';
 import {fontSizes} from '../../constants/constants';
@@ -10,6 +10,7 @@ export type FontWeight = '500' | '600' | 'bold' | 'extra' | 'italic' | 'normal';
 interface AppTextProps extends TextProps {
   text?: string;
   numberOfLines?: number;
+  font_name?: string;
   fs?: number;
   fw?: FontWeight;
   textStyle?: object;
@@ -26,6 +27,7 @@ interface AppTextProps extends TextProps {
 const AppText: React.FC<AppTextProps> = ({
   text = '',
   numberOfLines,
+  font_name = fontNames.Inter,
   fs = fontSizes.lg,
   fw = 'normal',
   textStyle = {},
@@ -42,25 +44,8 @@ const AppText: React.FC<AppTextProps> = ({
   const {width} = useWindowDimensions();
   const source = {html: text};
 
-  const fontFamily = (() => {
-    switch (fw) {
-      case '500':
-        return fonts.primaryMedium;
-      case '600':
-        return fonts.primarySemiBold;
-      case 'bold':
-        return fonts.primaryBold;
-      case 'extra':
-        return fonts.primaryExtraBold;
-      case 'italic':
-        return fonts.primaryItalic;
-      default:
-        return fonts.primaryRegular;
-    }
-  })();
-
   const commonStyle = {
-    fontFamily,
+    fontFamily: fontFamily(font_name, fw),
     color: textColor,
     fontSize: fs,
     flexShrink: 1,
