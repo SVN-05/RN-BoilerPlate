@@ -58,4 +58,4 @@ export const fontFamily = (font_name: string, fw: string) => {
   }
 };
 
-export {colors, fonts};
+export {colors};
