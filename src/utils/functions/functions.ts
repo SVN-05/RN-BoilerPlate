@@ -140,3 +140,14 @@ export function parseUTMParams(url: string) {
 
   return utmParams;
 }
+
+export const formatTime = (seconds: number) => {
+  if (seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' + secs : secs}`;
+  }
+  return '';
+};
+
+export const getDoubleDigitTiming = (time: string) => ('0' + time).slice(-2);
