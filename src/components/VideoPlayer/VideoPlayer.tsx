@@ -142,7 +142,7 @@ const VideoPlayer = ({
         paused={isPaused}
         onReadyForDisplay={handleOnReady}
         onProgress={handleProgress}
-        onEnd={handleEnd}
+        onEnd={handleModal}
         onBuffer={({isBuffering}) => {
           setIsVideoReady(isBuffering);
         }}
